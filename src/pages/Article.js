@@ -3,6 +3,7 @@ import articlecontent from "./article-content";
 import NotFound from "./PageNotFound";
 import { useState, useEffect } from "react";
 import axios from 'axios';
+import CommentList from "../components/CommentList";
 
 const Article = () => {
     const {articleId} = useParams();
@@ -34,6 +35,7 @@ const Article = () => {
             {article.content.map((paragraph, i) => (
                 <p key={i}>{paragraph}</p>
             ))}
+            <CommentList comments={articleInfo.comments}/>
         </>
     );
 }
