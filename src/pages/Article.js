@@ -21,6 +21,12 @@ const Article = () => {
     }, []);
 
     const article = articlecontent.find(article => article.name === articleId)
+    const upvoteArticle = async () =>
+    {
+        let response = await axios.put(`/api/articles/${articleId}/upvote`);
+        let newArticleInfo = response.data;
+        setArticleInfo(newArticleInfo);
+    }
 
     if (!article)
     {
@@ -31,7 +37,10 @@ const Article = () => {
         // empty tag Helper to return multiple tags (React Fragment)
         <> 
             <h1>{article.title}</h1>
-            <p> This article has {articleInfo.upvotes} upvote(s)</p>
+            <div className="upvotes-section">
+                <button onClick={upvoteArticle}>Upvote</button>
+                <p> This article has {articleInfo.upvotes} upvote(s)</p>
+            </div>
             {article.content.map((paragraph, i) => (
                 <p key={i}>{paragraph}</p>
             ))}
