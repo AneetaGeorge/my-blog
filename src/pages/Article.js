@@ -4,6 +4,7 @@ import NotFound from "./PageNotFound";
 import { useState, useEffect } from "react";
 import axios from 'axios';
 import CommentList from "../components/CommentList";
+import CommentForm from "../components/CommentForm";
 
 const Article = () => {
     const {articleId} = useParams();
@@ -44,6 +45,7 @@ const Article = () => {
             {article.content.map((paragraph, i) => (
                 <p key={i}>{paragraph}</p>
             ))}
+            <CommentForm articleId={articleId} onUpdatedArticle={updatedArticle => setArticleInfo(updatedArticle)} />
             <CommentList comments={articleInfo.comments}/>
         </>
     );
