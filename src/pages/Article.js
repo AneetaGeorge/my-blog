@@ -5,10 +5,12 @@ import { useState, useEffect } from "react";
 import axios from 'axios';
 import CommentList from "../components/CommentList";
 import CommentForm from "../components/CommentForm";
+import useUser from "../hooks/useUser";
 
 const Article = () => {
     const {articleId} = useParams();
     let [articleInfo, setArticleInfo] = useState({upvotes: 0, comments: []});
+    const {user, isLoading} = useUser();
 
     useEffect(() => {
         //Cannot have async function as first argument in useEffect
@@ -39,13 +41,19 @@ const Article = () => {
         <> 
             <h1>{article.title}</h1>
             <div className="upvotes-section">
-                <button onClick={upvoteArticle}>Upvote</button>
+                {user ? 
+                    <button onClick={upvoteArticle}>Upvote</button>
+                    : <button>Login to upvote articles</button>
+                }
                 <p> This article has {articleInfo.upvotes} upvote(s)</p>
             </div>
             {article.content.map((paragraph, i) => (
                 <p key={i}>{paragraph}</p>
             ))}
-            <CommentForm articleId={articleId} onUpdatedArticle={updatedArticle => setArticleInfo(updatedArticle)} />
+            {user ? 
+                    <CommentForm articleId={articleId} onUpdatedArticle={updatedArticle => setArticleInfo(updatedArticle)} />
+                    : <button>Login to comment on articles</button>
+            }
             <CommentList comments={articleInfo.comments}/>
         </>
     );
